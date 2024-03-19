@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.example.collegealertapp.databinding.ActivityAddUpcomingEventsBinding
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.messaging.FirebaseMessaging
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
@@ -55,6 +56,9 @@ class AddUpcomingEvents : AppCompatActivity() {
 
         // Initialize Firebase database reference
         db = FirebaseDatabase.getInstance().getReference("details")
+
+        // Subscribe to a topic for receiving notifications
+        FirebaseMessaging.getInstance().subscribeToTopic("events")
     }
 
     fun Submit_Data(view: View) {
@@ -99,6 +103,7 @@ class AddUpcomingEvents : AppCompatActivity() {
                 Toast.makeText(this, "Details not submitted", Toast.LENGTH_SHORT).show()
             }
     }
+
     private fun applyTheme() {
         val sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
         val isDarkModeEnabled = sharedPreferences.getBoolean("darkMode", false)

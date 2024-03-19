@@ -33,31 +33,25 @@ class Eventdetails : AppCompatActivity() {
         binding.textViewDescription.text = description
 
         // Load event image if available
-        try {
-            // Decode Base64 encoded image string into a Bitmap
-            val imageBytes = android.util.Base64.decode(imageUrl, android.util.Base64.DEFAULT)
-            val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+        if (!imageUrl.isNullOrEmpty()) {
+            try {
+                // Decode Base64 encoded image string into a Bitmap
+                val imageBytes = android.util.Base64.decode(imageUrl, android.util.Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
 
-            // Set Bitmap to ImageView
-            binding.imageViewEvent.setImageBitmap(bitmap)
+                // Set Bitmap to ImageView
+                binding.imageViewEvent.setImageBitmap(bitmap)
 
-        } catch (e: IllegalArgumentException) {
-            // Handle invalid Base64 encoded image
-            e.printStackTrace()
-            // Set placeholder image or handle the error in some other way
-            binding.imageViewEvent.setImageResource(R.drawable.placeholder_image)
-        } catch (e: OutOfMemoryError) {
-            // Handle out of memory error
-            e.printStackTrace()
-            // Set placeholder image or handle the error in some other way
-            binding.imageViewEvent.setImageResource(R.drawable.placeholder_image)
-        } catch (e: Exception) {
-            // Handle other exceptions
-            e.printStackTrace()
-            // Set placeholder image or handle the error in some other way
+            } catch (e: Exception) {
+                // Handle exceptions
+                e.printStackTrace()
+            }
+        } else {
+            // Handle case where imageUrl is null or empty
             binding.imageViewEvent.setImageResource(R.drawable.placeholder_image)
         }
     }
+
     private fun applyTheme() {
         val sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
         val isDarkModeEnabled = sharedPreferences.getBoolean("darkMode", false)
